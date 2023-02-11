@@ -15,6 +15,11 @@ defmodule AuthWeb.Router do
     post "/register", AuthController, :register
   end
 
+  scope "/api", AuthWeb do
+    pipe_through [:api, :authenticated]
+    get "/personal", UserController, :index
+  end
+
   # Enables LiveDashboard only for development
   #
   # If you want to use the LiveDashboard in production, you should put
