@@ -2,6 +2,8 @@
 
 Implementation of  **Authorize** for the Phoenix project with only API.
 
+( Just my practice
+
 # Running
 
 To start your Phoenix server:
