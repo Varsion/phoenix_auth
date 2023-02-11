@@ -10,7 +10,7 @@ defmodule Auth.User do
 
   def get_user_by_email(email) when is_binary(email), do: Repo.get_by(User, email: email)
 
-  def get_user_by_id(id) when is_binary(id), do: Repo.get_by(User, id: id)
+  def get_user_by_id(id), do: Repo.get_by(User, id: id)
 
   def create_user(attrs \\ %{}) do
     %User{}

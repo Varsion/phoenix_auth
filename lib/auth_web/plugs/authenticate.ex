@@ -1,6 +1,6 @@
 defmodule AuthWeb.Plug.Authenticate do
   import Plug.Conn
-  require Logger
+  alias Auth.User
 
   def init(opts) do
     opts
@@ -10,9 +10,9 @@ defmodule AuthWeb.Plug.Authenticate do
     with ["Bearer " <> token] <- get_req_header(conn, "authorization"),
          {:ok, data} <- Auth.Token.verify(token) do
       conn
-      |> assign(:current_user, Auth.User.get_user(data.user_id))
+      |> assign(:current_user, User.get_user_by_id(data.user_id))
     else
-      error ->
+      _ ->
         conn
         |> put_status(:unauthorized)
         |> Phoenix.Controller.put_view(AuthWeb.ErrorView)
