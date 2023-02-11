@@ -6,6 +6,7 @@ defmodule Auth.Repo.Migrations.CreateUsers do
       add :email, :string
       add :name, :string
       add :password, :string
+      add :encrypted_password, :string
       add :token, :string
 
       timestamps()

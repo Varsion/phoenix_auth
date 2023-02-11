@@ -1,21 +1,16 @@
 defmodule Auth.User do
-  use Ecto.Schema
-  import Ecto.Changeset
+  @moduledoc """
+  The User Model.
+  """
 
-  schema "users" do
-    field :email, :string
-    field :name, :string
-    field :password, :string
-    field :token, :string
+  import Ecto.Query, warn: false
+  alias Auth.Repo
 
-    timestamps()
-  end
+  alias Auth.Schemas.User
 
-  @doc false
-  def changeset(user, attrs) do
-    user
-    |> cast(attrs, [:email, :name, :password, :token])
-    |> validate_required([:email, :name, :password, :token])
-    |> unique_constraint(:email)
+  def create_user(attrs \\ %{}) do
+    %User{}
+    |> User.registration_changeset(attrs)
+    |> Repo.insert()
   end
 end
