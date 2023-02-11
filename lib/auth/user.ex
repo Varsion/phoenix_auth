@@ -8,9 +8,16 @@ defmodule Auth.User do
 
   alias Auth.Schemas.User
 
+  def get_user_by_email(email) when is_binary(email), do: Repo.get_by(User, email: email)
+
   def create_user(attrs \\ %{}) do
     %User{}
     |> User.registration_changeset(attrs)
     |> Repo.insert()
+  end
+
+  def verify_user(%{"email" => email, "password" => password}) do
+    get_user_by_email(email)
+    |> User.verify_password(password)
   end
 end

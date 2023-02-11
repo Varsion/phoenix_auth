@@ -1,6 +1,7 @@
 defmodule Auth.Schemas.User do
   use Ecto.Schema
   import Ecto.Changeset
+  alias Auth.Schemas.User
 
   schema "users" do
     field :email, :string
@@ -17,8 +18,20 @@ defmodule Auth.Schemas.User do
     user
     |> cast(attrs, [:email, :password, :name])
     |> validate_required([:email, :name, :password])
+    |> unique_constraint(:email)
     |> validate_format(:email, ~r/@/)
     |> encrypt_password()
+  end
+
+  def verify_password(%User{encrypted_password: encrypted_password} = user, password) do
+    case Bcrypt.verify_pass(password, encrypted_password) do
+      true -> {:ok, user}
+      false -> {:error, "verify error"}
+    end
+  end
+
+  def verify_password(_, _) do
+    {:error, "verify error"}
   end
 
   defp encrypt_password(changeset) do
