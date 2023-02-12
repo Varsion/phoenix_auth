@@ -15,8 +15,11 @@ defmodule Auth.Token do
   end
 
   def verify(token) do
-    case Phoenix.Token.verify(AuthWeb.Endpoint, @token_salt, token,
-             max_age: @token_age_secs
+    case Phoenix.Token.verify(
+          AuthWeb.Endpoint,
+          @token_salt,
+          token,
+          max_age: @token_age_secs
            ) do
       {:ok, data} -> {:ok, data}
       _error -> {:error, :unauthenticated}
