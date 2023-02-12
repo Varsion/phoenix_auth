@@ -28,7 +28,15 @@ defmodule AuthWeb.AuthControllerTest do
           "password" => "123456"
         }
       })
-      assert %{"error" => "create error"} = json_response(conn, 200)
+      assert %{
+        "errors" => [
+          %{
+            "detail" => "has already been taken",
+            "source" => %{"pointer" => "/data/attributes/email"},
+            "title" => "Invalid Attribute"
+          }
+        ]
+      } = json_response(conn, 409)
     end
   end
 end

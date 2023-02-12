@@ -24,10 +24,11 @@ defmodule AuthWeb.AuthController do
         conn
         |> put_status(:created)
         |> render("auth.json", user: user)
-      {:error, _} ->
-        json(conn, %{
-          error: "create error"
-        })
+      {:error, errors} ->
+        conn
+        |> put_status(:conflict)
+        |> put_view(AuthWeb.ChangesetView)
+        |> render("error.json", changeset: errors)
     end
   end
 end
