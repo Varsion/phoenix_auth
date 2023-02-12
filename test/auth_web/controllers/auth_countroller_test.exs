@@ -38,5 +38,24 @@ defmodule AuthWeb.AuthControllerTest do
         ]
       } = json_response(conn, 409)
     end
+
+    test "email format error", %{conn: conn} do
+      conn = post(conn, "/api/register", %{
+        "user" => %{
+          "name" => "Test User Name",
+          "email" => "hello.com",
+          "password" => "123456"
+        }
+      })
+      assert %{
+        "errors" => [
+          %{
+            "detail" => "has invalid format",
+            "source" => %{"pointer" => "/data/attributes/email"},
+            "title" => "Invalid Attribute"
+          }
+        ]
+      } = json_response(conn, 409)
+    end
   end
 end
