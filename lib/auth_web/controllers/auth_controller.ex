@@ -2,10 +2,9 @@ defmodule AuthWeb.AuthController do
   use AuthWeb, :controller
 
   alias Auth.User
-  alias Auth.Schemas.User, as: UserSchema
   alias Auth.Token
 
-  def login(conn, %{"email" => email, "password" => password} = user_params) do
+  def login(conn, user_params) do
     with {:ok, user} <- User.verify_user(user_params),
          {:ok, token} <- Token.sign(%{user_id: user.id}) do
           json(conn, %{
